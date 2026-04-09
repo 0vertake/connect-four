@@ -7,6 +7,8 @@ import org.milos.connectfour.model.Player
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class GameLogicTest {
 
@@ -184,5 +186,30 @@ class GameLogicTest {
 
         state = dropPiece(state, 5)
         assertEquals(Pair(5, 0), state.lastMove)
+    }
+
+    @Test
+    fun winOnBoardFillingMove() {
+        // 4x3 board where P2's last move fills the board AND completes a horizontal 3.
+        // Sequence: each column fills bottom-up; move 12 places P2@(2,2) completing row 2.
+        val config = GameConfig(cols = 4, rows = 3, winCondition = 3)
+        val state = dropSequence(
+            listOf(2, 1, 0, 2, 3, 3, 0, 0, 1, 1, 3, 2),
+            config
+        )
+        val status = assertIs<GameStatus.Won>(state.status)
+        assertEquals(Player.TWO, status.winner)
+    }
+
+    @Test
+    fun newGameInitialState() {
+        val config = GameConfig(cols = 5, rows = 4, winCondition = 3)
+        val state = newGame(config)
+        assertEquals(5, state.board.size)
+        assertEquals(4, state.board[0].size)
+        assertTrue(state.board.all { col -> col.all { it == Player.NONE } })
+        assertEquals(Player.ONE, state.currentPlayer)
+        assertIs<GameStatus.Ongoing>(state.status)
+        assertNull(state.lastMove)
     }
 }

@@ -55,7 +55,8 @@ composeApp/src/webMain/kotlin/org/milos/connectfour/
 │   └── GameStorage.kt      # localStorage persistence
 └── ui/
     ├── App.kt              # Root composable, state management
-    ├── AppStyles.kt        # StyleSheet definitions
+    ├── AppStyles.kt        # Global styles (layout, forms, buttons)
+    ├── BoardStyles.kt      # Board, cell, and animation styles
     ├── ConfigScreen.kt     # Board configuration form
     ├── GameScreen.kt       # Game view with status bar
     ├── Board.kt            # Board grid composable
